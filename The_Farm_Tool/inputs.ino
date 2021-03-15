@@ -115,6 +115,7 @@ void updatePots() {
     int thisPot = analogRead(potPins[i]);
     int mapPot = map(thisPot, 0, 1023, 0, 127);
 
+    //reverses the mapping so the knobs rotate the correct way
     if (i != 4) {
       mapPot = 127 - mapPot;
     }
