@@ -7,9 +7,10 @@ int drumPotTol = 10;
 
 void drumBoard() {
 
+  //sets LED colors for the screen
   if (drumLights) {
     strip.clear();
-    
+
     for (int i = 0; i < strip.numPixels(); i++) {
       //drum color
       strip.setPixelColor(i, 68, 50, 170);
@@ -26,7 +27,7 @@ void drumBoard() {
     drumLights = false;
   }
 
-
+  //runs through the buttons to check if any have been pressed
   for (int i = 0; i < 8; i++) {
     int curDrum = buttonStates[i];
 
@@ -40,13 +41,14 @@ void drumBoard() {
       }
     }
 
+    //state change buttons
     if (curDrum == 1 && i == 0) {
       strip.clear(); drumLights = false; synthLights = true; screen = 2;
       Serial.println("drum to synth");
     }
     if (curDrum == 1 && i == 4) {
       strip.clear(); drumLights = false; pedalLights = true; screen = 3;
-           Serial.println("drum to pedals");
+      Serial.println("drum to pedals");
     }
   }
 

@@ -1,8 +1,10 @@
+//Fun animation on power on
 void wakeUp() {
-  //Fun animation on power on
 
-strip.setBrightness(75);
-  
+  //put on a little make up
+
+  //starts out dim
+  strip.setBrightness(75);
   //initial color splash
   strip.setPixelColor(0, 68, 50, 170);
   delay(500);
@@ -28,9 +30,8 @@ strip.setBrightness(75);
   strip.setPixelColor(1, 125, 87, 96);
   delay(100);
   strip.show();
-
-strip.setBrightness(150);
-
+  //increases brightness for step 2
+  strip.setBrightness(150);
   strip.setPixelColor(5, 168, 5, 98);
   delay(100);
   strip.show();
@@ -55,9 +56,8 @@ strip.setBrightness(150);
   strip.setPixelColor(3, 25, 87, 209);
   delay(100);
   strip.show();
-
-strip.setBrightness(255);
-
+  //full brightness for the rest of the sketch
+  strip.setBrightness(255);
   strip.setPixelColor(3, 68, 50, 170);
   delay(50);
   strip.show();
@@ -83,24 +83,13 @@ strip.setBrightness(255);
   delay(50);
   strip.show();
 
+
+  //sends it into the drum screen
   drumLights = true;
   screen = 1;
 }
 
-///////////////////////////////////////////////
-uint32_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if (WheelPos < 85) {
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if (WheelPos < 170) {
-    WheelPos -= 85;
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-}
-//////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////
 
 void initializeButtons() {
   for (int i = 0; i < 8; i++) {
@@ -108,7 +97,7 @@ void initializeButtons() {
     buttons[i].interval(15);
   }
 }
-
+//////////////////////////////////////////////////////////////////
 void updateButtons() {
   for (int i = 0; i < 8; i++) {
     buttons[i].update();
@@ -120,16 +109,16 @@ void updateButtons() {
     }
   }
 }
-
+////////////////////////////////////////////////////////////////
 void updatePots() {
   for (int i = 0; i < 4; i++) {
     int thisPot = analogRead(potPins[i]);
     int mapPot = map(thisPot, 0, 1023, 0, 127);
 
-if(i != 4){
-  mapPot = 127 - mapPot;
-}
-    
+    if (i != 4) {
+      mapPot = 127 - mapPot;
+    }
+
     potStates[i] = mapPot;
   }
 }

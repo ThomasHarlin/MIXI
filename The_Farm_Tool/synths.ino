@@ -10,54 +10,57 @@ int synthOffset2 = (8 + synthOffset);
 
 ///////////////////////////////////////////////////////////////////////////////
 void synthBoard() {
+
+  //sets LEDs for the pedals screen
   if (synthLights) {
     for (int i = 0; i < strip.numPixels(); i++) {
-        //synth color
-        strip.setPixelColor(i, 250, 22, 216);
-        if (i == 0) {
-          //pedal color
-          strip.setPixelColor(i, 245, 158, 42);
-        }
-        if (i == 4) {
-          //drum color
-          strip.setPixelColor(i, 68, 50, 170);
-        }
+      //synth color
+      strip.setPixelColor(i, 250, 22, 216);
+      if (i == 0) {
+        //pedal color
+        strip.setPixelColor(i, 245, 158, 42);
       }
-      strip.show();
-      pedalLights = false;
+      if (i == 4) {
+        //drum color
+        strip.setPixelColor(i, 68, 50, 170);
+      }
     }
+    strip.show();
+    pedalLights = false;
+  }
 
+  //checks if buttons were pressed
+  for (int i = 0; i < 8; i++) {
+    int curSynth = buttonStates[i];
 
-    for (int i = 0; i < 8; i++) {
-      int curSynth = buttonStates[i];
-
-      if (curSynth == 1 && i != 0 && 1 != 4) {
-        synthButtons[i] = !synthButtons[i];
-        if (synthButtons[i]) {
-          usbMIDI.sendControlChange(i + synthOffset, 127, 1);
-        }
-        else {
-          usbMIDI.sendControlChange(i + synthOffset, 0, 1);
-        }
+    if (curSynth == 1 && i != 0 && 1 != 4) {
+      synthButtons[i] = !synthButtons[i];
+      if (synthButtons[i]) {
+        usbMIDI.sendControlChange(i + synthOffset, 127, 1);
       }
-
-      if (curSynth == 1 && i == 0) {
-        strip.clear(); synthLights = false; pedalLights = true; screen = 3;
-        Serial.println("synth to pedal");
-      }
-      if (curSynth == 1 && i == 4) {
-        strip.clear(); synthLights = false; drumLights = true; screen = 1;
-        Serial.println("synth to drums");
+      else {
+        usbMIDI.sendControlChange(i + synthOffset, 0, 1);
       }
     }
 
-    //storing the pots//
-    for (int i = 0; i < 4; i++) {
-      int thisPot = potStates[i];
-      if (abs(thisPot - synthPots[i]) > synthPotTol) {
-        usbMIDI.sendControlChange(i + synthOffset2, thisPot, 1);
-        synthPots[i] = thisPot;
-      }
-
+    //screen change buttons
+    if (curSynth == 1 && i == 0) {
+      strip.clear(); synthLights = false; pedalLights = true; screen = 3;
+      Serial.println("synth to pedal");
+    }
+    if (curSynth == 1 && i == 4) {
+      strip.clear(); synthLights = false; drumLights = true; screen = 1;
+      Serial.println("synth to drums");
     }
   }
+
+  //storing the pots//
+  for (int i = 0; i < 4; i++) {
+    int thisPot = potStates[i];
+    if (abs(thisPot - synthPots[i]) > synthPotTol) {
+      usbMIDI.sendControlChange(i + synthOffset2, thisPot, 1);
+      synthPots[i] = thisPot;
+    }
+
+  }
+}

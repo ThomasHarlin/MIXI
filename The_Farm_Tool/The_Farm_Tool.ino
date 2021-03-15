@@ -18,8 +18,6 @@ bool drumLights = false;
 bool synthLights = false;
 bool pedalLights = false;
 
-
-
 void setup() {
   Serial.begin(9600);
   strip.begin();
@@ -29,12 +27,12 @@ void setup() {
 }
 
 void loop() {
+  //updates the current state of the pots and buttons
   updateButtons();
-//  printButtons();
   updatePots();
- // printPots();
 
-  //state machine of control which "screen" im on
+
+  //state machine of control which "screen" i'm on
   switch (screen) {
     case 0:
       wakeUp();

@@ -10,6 +10,8 @@ int pedalOffset2 = (8 + pedalOffset);
 
 ///////////////////////////////////////////////////////////////////////////////
 void pedalBoard() {
+
+  //sets LEDS for pedal screen
   if (pedalLights) {
     for (int i = 0; i < strip.numPixels(); i++) {
       //pedal color
@@ -31,6 +33,7 @@ void pedalBoard() {
   for (int i = 0; i < 8; i++) {
     int curPedal = buttonStates[i];
 
+    //checks if buttons were pressed
     if (curPedal == 1 && i != 0 && 1 != 4) {
       pedalButtons[i] = !pedalButtons[i];
       if (pedalButtons[i]) {
@@ -41,9 +44,10 @@ void pedalBoard() {
       }
     }
 
+    //screen change buttons
     if (curPedal == 1 && i == 0) {
       strip.clear(); pedalLights = false; drumLights = true; screen = 1;
-           Serial.println("pedal to drums");
+      Serial.println("pedal to drums");
     }
     if (curPedal == 1 && i == 4) {
       strip.clear(); pedalLights = false; synthLights = true; screen = 2;
